@@ -10,12 +10,12 @@ export default function OAuthCallback() {
     if (code) {
       // Send the authorization code to the backend
       fetch('http://localhost:5000/api/exchange-token', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code, state }),
-      })
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ code: 'authorizationCode', state: 'stateValue' }),
+})
       .then(response => response.json())
       .then(data => {
         // Handle response data, e.g., access token, error messages

@@ -5,36 +5,30 @@ export default function OAuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    // Ensure the router is ready and query parameters are accessible
     if (router.isReady) {
       const { code, state } = router.query;
-
-      // Proceed only if the code exists
       if (code) {
-        fetch('/api/exchange-token', {
+        // Correctly use the code and state from the router's query parameters
+        fetch('http://localhost:5000/api/exchange-token', {
           method: 'POST',
           headers: {
-              'Content-Type': 'application/json',
+            'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-              code, // Use the actual authorization code received from the query
-              state // Optionally pass the state if your backend needs to validate it
-          }),
+          body: JSON.stringify({ code, state }), // Use the variables directly
         })
         .then(response => {
           if (!response.ok) {
-              throw new Error('Network response was not ok');
+            throw new Error('Network response was not ok');
           }
           return response.json();
         })
         .then(data => {
           console.log(data);
-          // Handle success, e.g., redirecting the user or showing a success message
-          // router.push('/success-page'); // Example redirect on success
+          // Redirect or update UI based on the response
+          router.push('/dashboard');
         })
         .catch(error => {
           console.error('Error:', error);
-          // Handle error, e.g., showing an error message to the user
         });
       }
     }

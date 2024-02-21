@@ -9,7 +9,7 @@ export default function OAuthCallback() {
     const { code, state } = router.query;
     if (code) {
       // Send the authorization code to the backend
-      fetch('/api/exchange-token', {
+      fetch('http://localhost:5000/api/exchange-token', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,25 +1,34 @@
-import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+// pages/oauth-callback.js
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function OAuthCallback() {
-    const router = useRouter()
+  const router = useRouter();
 
-    useEffect(() => {
-        // This code runs when the component mounts
-        const { oauth_token, oauth_verifier } = router.query
+  useEffect(() => {
+    // Extracting OAuth parameters from URL
+    const { oauth_token, oauth_verifier } = router.query;
+    
+    if (!oauth_token || !oauth_verifier) {
+      console.log("OAuth parameters are missing");
+      // Handle missing parameters, possibly redirect or show an error message
+      return;
+    }
 
-        // Here you can handle the OAuth tokens, for example:
-        console.log('OAuth Token:', oauth_token)
-        console.log('OAuth Verifier:', oauth_verifier)
+    // TODO: Use these parameters to proceed with your OAuth flow, such as
+    // exchanging the verifier for an access token.
+    console.log('OAuth Token:', oauth_token);
+    console.log('OAuth Verifier:', oauth_verifier);
 
-        // You might want to redirect the user or perform some action here
-    }, [router.query])
+    // Redirect the user or perform further actions as necessary
+    // router.push('/some-next-step');
 
-    return (
-        <div className="container">
-            <h1>OAuth Callback Handling</h1>
-            {/* Display some message or perform further actions */}
-            <p>Processing...</p>
-        </div>
-    )
+  }, [router.isReady, router.query]);
+
+  return (
+    <div>
+      <h1>OAuth Callback</h1>
+      {/* Display any relevant information or further instructions */}
+    </div>
+  );
 }

@@ -5,26 +5,21 @@ export default function OAuthCallback() {
   const router = useRouter();
 
   useEffect(() => {
-    // OAuth 2.0: Extracting the code parameter from URL
+  // Ensure the router is ready and query parameters are populated
+  if (router.isReady) {
     const { code, state } = router.query;
     
     if (!code) {
       console.log("OAuth authorization code is missing");
-      // Handle missing code, possibly redirect or show an error message
       return;
     }
 
     console.log('OAuth Code:', code);
     console.log('State:', state);
 
-    // Here, you would typically send 'code' to your backend server
-    // where you can securely exchange it for an access token.
-    // Make sure to also validate 'state' to mitigate CSRF attacks.
-
-    // Redirect the user or perform further actions as necessary
-    // router.push('/some-next-step');
-
-  }, [router.isReady, router.query]);
+    // Proceed with your OAuth flow, typically by sending 'code' to your backend
+  }
+}, [router.isReady, router.query]); // Depend on router.isReady
 
   return (
     <div>

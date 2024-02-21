@@ -8,17 +8,21 @@ export default function OAuthCallback() {
   if (router.isReady) {
     const { code, state } = router.query;
     if (code) {
-      // Send the authorization code to the backend
+      // Correctly use the code and state from the router's query parameters
       fetch('http://localhost:5000/api/exchange-token', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({ code: 'authorizationCode', state: 'stateValue' }),
-})
-      .then(response => response.json())
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code, state }), // Use the variables directly
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
-        // Handle response data, e.g., access token, error messages
         console.log(data);
         // Redirect or update UI based on the response
         router.push('/dashboard');

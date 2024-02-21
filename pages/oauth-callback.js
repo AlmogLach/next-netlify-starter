@@ -4,22 +4,31 @@ import { useRouter } from 'next/router';
 export default function OAuthCallback() {
   const router = useRouter();
 
-  useEffect(() => {
-  // Ensure the router is ready and query parameters are populated
+ useEffect(() => {
   if (router.isReady) {
     const { code, state } = router.query;
-    
-    if (!code) {
-      console.log("OAuth authorization code is missing");
-      return;
+    if (code) {
+      // Send the authorization code to the backend
+      fetch('/api/exchange-token', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code, state }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Handle response data, e.g., access token, error messages
+        console.log(data);
+        // Redirect or update UI based on the response
+        router.push('/dashboard');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
     }
-
-    console.log('OAuth Code:', code);
-    console.log('State:', state);
-
-    // Proceed with your OAuth flow, typically by sending 'code' to your backend
   }
-}, [router.isReady, router.query]); // Depend on router.isReady
+}, [router.isReady, router.query]);
 
   return (
     <div>
